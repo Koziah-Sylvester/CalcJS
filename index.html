@@ -1,8 +1,41 @@
-
+<div id="div"></div>
 <script>
-
-
-
-
-
+    const div = document.getElementById("div");
+    const ROW_SIZE = 4
+    const LAYOUT = ['7','8','9','/','4','5','6','*','1','2','3','+','C','0','=','-'];
+    const result = document.createElement('p');
+    let equation = '';
+    function onButtonClick(event) { 
+        switch(event.target.value) {
+            case '=':
+                try {
+                    result.innerText = eval(equation);
+                    equation = result.innerText;
+                } catch (error) {
+                    result.innerText = "Error: input correct syntax.";
+                }
+                break;
+            case 'C':
+                equation = 0;
+                break;
+            default:
+                equation += event.target.value;
+                result.innerText = equation;
+        }
+    }
+    function createButton(char) {
+        const button = document.createElement("button"); 
+        button.appendChild(document.createTextNode(char));
+        button.setAttribute('value',char);
+        button.addEventListener("click",onButtonClick);
+        return button;
+    }
+    for (let i = 0; i < LAYOUT.length; i++) { // !?
+        div.appendChild(createButton(LAYOUT[i])); // !?
+        if ((i+1) % 4 == 0) {
+            div.appendChild(document.createElement("br"));
+        }
+    }
+    div.appendChild(result);
 </script>
+
