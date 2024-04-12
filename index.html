@@ -5,23 +5,30 @@
     const LAYOUT = ['7','8','9','/','4','5','6','*','1','2','3','+','C','0','=','-'];
     const result = document.createElement('p');
     let equation = '';
+    function toggleShowCalculator() {
+        if (div.style.display == "none") {
+            div.style.setProperty("display", "block");
+        } else {
+            div.style.setProperty("display", "none");
+        }
+    }
     function onButtonClick(event) { 
         switch(event.target.value) {
             case '=':
                 try {
-                    result.innerText = eval(equation);
-                    equation = result.innerText;
+                    equation = eval(equation);
                 } catch (error) {
                     result.innerText = "Error: input correct syntax.";
+                    return;
                 }
                 break;
             case 'C':
-                equation = 0;
+                equation = '';
                 break;
             default:
                 equation += event.target.value;
-                result.innerText = equation;
         }
+        result.innerText = equation;
     }
     function createButton(char) {
         const button = document.createElement("button"); 
@@ -30,12 +37,16 @@
         button.addEventListener("click",onButtonClick);
         return button;
     }
+    const toggle = document.createElement("button"); 
+    toggle.appendChild(document.createTextNode("Open/Close"));
+    toggle.addEventListener("click",toggleShowCalculator);
+    parent.document.body.prepend(toggle);
     for (let i = 0; i < LAYOUT.length; i++) { // !?
         div.appendChild(createButton(LAYOUT[i])); // !?
         if ((i+1) % 4 == 0) {
             div.appendChild(document.createElement("br"));
         }
-    }
+    } 
     div.appendChild(result);
 </script>
 
